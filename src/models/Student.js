@@ -1,6 +1,6 @@
 // src/models/Student.js
 const { DataTypes } = require('sequelize');  // Only import DataTypes
-const sequelize = require('../config/dbConnection');  // Importing the sequelize instance
+const {sequelize} = require('../config/dbConnection');  // Importing the sequelize instance
 
 // Define the Student model
 const Student = sequelize.define('Student', {

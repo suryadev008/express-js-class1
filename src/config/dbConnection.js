@@ -15,6 +15,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: 'mysql',
     logging: console.log,  // Enable logging in development for debugging
     pool: {
@@ -29,6 +30,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: 'mysql',
     logging: false,  // Disable logging in production
     pool: {
@@ -47,6 +49,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: 'mysql',
     logging: false,
   }
@@ -62,20 +65,21 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.p
   host: dbConfig.host,
   dialect: dbConfig.dialect,
   logging: dbConfig.logging,
+  port: 3308,
   pool: dbConfig.pool,
   dialectOptions: dbConfig.dialectOptions,
 });
 
 
 // Authenticate the connection
-// async function testConnection() {
-//   try {
-//     await sequelize.authenticate();
-//     console.log('Database connection established successfully.');
-//   } catch (error) {
-//     console.error('Unable to connect to the database:', error);
-//     throw error; // Throw error to handle it in the API
-//   }
-// }
+async function testConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    throw error; // Throw error to handle it in the API
+  }
+}
 
-module.exports = sequelize;
+module.exports = {sequelize, testConnection};

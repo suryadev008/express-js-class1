@@ -19,7 +19,11 @@ async function addStudent(sname, roll, email) {
 // Service to get a student by ID
 async function getStudentById(id) {
   try {
-    const student = await Student.findByPk(id);
+    const student = await Student.findOne({
+      where: {
+        roll: id
+      }
+    });
     return student;
   } catch (error) {
     console.error('Error fetching student by ID:', error);
@@ -41,7 +45,11 @@ async function getAllStudents() {
 // Service to update a student's details by ID
 async function updateStudent(id, sname, roll, email) {
   try {
-    const student = await Student.findByPk(id);
+    const student = await Student.findOne({
+      where: {
+        roll: id
+      }
+    });
     if (student) {
       student.sname = sname || student.sname;
       student.roll = roll || student.roll;
@@ -60,13 +68,20 @@ async function updateStudent(id, sname, roll, email) {
 // Service to delete a student by ID
 async function deleteStudent(id) {
   try {
-    const student = await Student.findByPk(id);
+    
+    const student = await Student.findOne({
+      where: {
+        roll: id
+      }
+    });
+
     if (student) {
       await student.destroy();
       return { message: 'Student deleted successfully' };
     } else {
       throw new Error('Student not found');
     }
+    
   } catch (error) {
     console.error('Error deleting student:', error);
     throw error;

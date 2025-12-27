@@ -5,6 +5,7 @@ const cors = require('cors');
 const dbConfig=require('./config/dbConnection');
 const studentRoutes = require('./routes/studentRoutes');  // Correct pat
 
+
 require('dotenv').config();
 const app = express()
 app.use(express.json());
@@ -39,6 +40,17 @@ app.get('/', (req, res) => {
 app.get('/dbconn', (req, res) => {
   dbConfig.testConnection();
 })
+
+app.get("/users/profile", (req, res) => {
+  res.send("User profile");
+});
+
+app.get("/users/:id", (req, res) => {
+  const userId = req.params.id;
+  res.send("User by ID"+userId);
+});
+
+
 
 app.listen(port, () => {
   // retryConnection();

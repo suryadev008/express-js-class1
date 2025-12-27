@@ -1,23 +1,22 @@
 // src/controllers/studentController.js
-const { addStudent, getStudentById, getAllStudents, updateStudent, deleteStudent } = require('../services/StudentService');
+const StudentService= require('../services/StudentService');
 
-// Controller for adding a student
-async function addStudentController(req, res) {
-  const { sname, roll, email } = req.body;
+// Controller for getting all students
+async function getAllStudentsController(req, res) {
   try {
-    const newStudent = await addStudent(sname, roll, email); // service
-    res.status(201).json({
+    const students = await StudentService.getAllStudents();
+    res.json({
       error: false,
       message: "Success",
-      code: "STUD_CRT_SUES",
-      data: newStudent
+      code: "STUD_GET_ALL_SUES",
+      data: students
     });
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: "Error adding student",
-      code: "STUD_CRT_FAL",
-      data: ""
+      message: 'Error fetching students',
+      code: 'STUD_GET_ALL_FAL',
+      data: ''
     });
   }
 }
@@ -26,7 +25,7 @@ async function addStudentController(req, res) {
 async function getStudentByIdController(req, res) {
   const { id } = req.params;
   try {
-    const student = await getStudentById(id); // service 
+    const student = await StudentService.getStudentById(id); // service 
     if (student) {
       res.json({
         error: false,
@@ -52,32 +51,37 @@ async function getStudentByIdController(req, res) {
   }
 }
 
-// Controller for getting all students
-async function getAllStudentsController(req, res) {
+
+// Controller for adding a student
+async function addStudentController(req, res) {
+  const { sname, roll, email } = req.body;
+  // console.log("In controller:", sname, roll, email);
+  // return;
   try {
-    const students = await getAllStudents();
-    res.json({
+    const newStudent = await StudentService.addStudent(sname, roll, email); // service
+    res.status(201).json({
       error: false,
       message: "Success",
-      code: "STUD_GET_ALL_SUES",
-      data: students
+      code: "STUD_CRT_SUES",
+      data: newStudent
     });
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: 'Error fetching students',
-      code: 'STUD_GET_ALL_FAL',
-      data: ''
+      message: "Error adding student",
+      code: "STUD_CRT_FAL",
+      data: ""
     });
   }
 }
+
 
 // Controller for updating a student by ID
 async function updateStudentController(req, res) {
   const { id } = req.params;
   const { sname, roll, email } = req.body;
   try {
-    const updatedStudent = await updateStudent(id, sname, roll, email);
+    const updatedStudent = await StudentService.updateStudent(id, sname, roll, email);
     if (updatedStudent) {
       res.json({
         error: false,
@@ -103,11 +107,12 @@ async function updateStudentController(req, res) {
   }
 }
 
+
 // Controller for deleting a student by ID
 async function deleteStudentController(req, res) {
   const { id } = req.params;
   try {
-    const result = await deleteStudent(id);
+    const result = await StudentService.deleteStudent(id);
     if (result) {
       res.json({
         error: false,
